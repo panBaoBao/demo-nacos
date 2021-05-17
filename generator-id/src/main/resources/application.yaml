@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: generator-id # 服务名
+  cloud:
+    nacos:
+      # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类
+      discovery:
+        server-addr: 192.168.157.128:8858 #代理地址
+        service: ${spring.application.name} # 注册到 Nacos 的服务名。默认值为 ${spring.application.name}。
+  datasource:
+    druid:
+      url: jdbc:mysql://192.168.157.128:3306/idgeneratorDB?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: root123
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      maxWait: 10000
+      initial-size: 10
+      max-active: 30
+      min-idle: 10
+      validation-query: select 1 from dual
+
+  mybatis:
+    mapper-locations: mapper/**Mapper.xml
+    configuration:
+      map-underscore-to-camel-case: false
+
+server:
+  port: 18085 # 服务器端口。默认为 8080
+  servlet:
+    context-path: /e/

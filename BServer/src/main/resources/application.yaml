@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: b-server # 服务名
+  cloud:
+    nacos:
+      # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类
+      discovery:
+        #server-addr: 127.0.0.1:8847,127.0.0.1:8849,127.0.0.1:8858 # Nacos 服务器地址
+        #server-addr: 192.168.157.128:10010,192.168.157.128:10081,192.168.157.128:11012
+        server-addr: 192.168.157.128:8858 #代理地址
+        service: ${spring.application.name} # 注册到 Nacos 的服务名。默认值为 ${spring.application.name}。
+
+server:
+  port: 18081 # 服务器端口。默认为 8080
+  servlet:
+    context-path: /b/

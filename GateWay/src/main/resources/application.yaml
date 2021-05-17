@@ -1,0 +1,48 @@
+server:
+  port: 80
+
+
+spring:
+  application:
+    name: ytwl-gateway
+
+  cloud:
+    nacos:
+      # Nacos 作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类
+      discovery:
+        #server-addr: 127.0.0.1:8847,127.0.0.1:8849,127.0.0.1:8858 # Nacos 服务器地址
+        #server-addr: 192.168.157.128:10010,192.168.157.128:10081,192.168.157.128:11012
+        server-addr: 192.168.157.128:8858 #代理地址
+        service: ${spring.application.name} # 注册到 Nacos 的服务名。默认值为 ${spring.application.name}。
+
+    # Spring Cloud Gateway 配置项，对应 GatewayProperties 类
+    gateway:
+      # 路由配置项，对应 RouteDefinition 数组
+      routes:
+        - id: a # 路由的编号
+         # uri: http://127.0.0.1:18080 # 路由到的目标地址
+          uri: lb://a-server
+          predicates: # 断言，作为路由的匹配条件，对应 RouteDefinition 数组
+            - Path=/a/**
+          filters:
+           # - StripPrefix=1
+        - id: b # 路由的编号
+          #uri: http://127.0.0.1:18081 # 路由的目标地址
+          uri: lb://b-server
+          predicates: # 断言，作为路由的匹配条件，对应 RouteDefinition 数组
+            - Path=/b/**
+          filters: # 过滤器，对请求进行拦截，实现自定义的功能，对应 FilterDefinition 数组
+            #- StripPrefix=1
+        - id: c # 路由的编号
+           #uri: http://127.0.0.1:18081 # 路由的目标地址
+          uri: lb://demo-config
+          predicates: # 断言，作为路由的匹配条件，对应 RouteDefinition 数组
+            - Path=/c/**
+          filters: # 过滤器，对请求进行拦截，实现自定义的功能，对应 FilterDefinition 数组
+          #- StripPrefix=1
+        - id: d # 路由的编号
+          uri: lb://d-sentinel
+          predicates:
+            - Path=/d/**
+          filters:
+

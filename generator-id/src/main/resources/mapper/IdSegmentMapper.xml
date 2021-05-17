@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bbg.generatorid.dao.IdSegmentDao">
+
+	<resultMap id="idSegmentResultMap" type="com.bbg.generatorid.entity.IdSegmentEntity">
+		<result column="bizTag" property="bizTag"/>
+		<result column="step" property="step"/>
+		<result column="PREFIX" property="prefix"/>
+		<result column="maxId" property="maxId"/>
+		<result column="lastUpdateTime" property="lastUpdateTime"/>
+		<result column="currentUpdateTime" property="currentUpdateTime"/>
+
+	</resultMap>
+
+	<sql id="idSegmentColumns">
+		id_segment.BIZ_TAG AS "bizTag",
+		id_segment.STEP AS "step",
+		id_segment.PREFIX AS "prefix",
+		id_segment.MAX_ID AS "maxId",
+		id_segment.LAST_UPDATE_TIME AS "lastUpdateTime",
+		id_segment.CURRENT_UPDATE_TIME AS "currentUpdateTime"
+	</sql>
+
+	<sql id="idSegmentJoins">
+
+	</sql>
+
+	<select id="findOne" resultMap="idSegmentResultMap">
+		SELECT
+		<include refid="idSegmentColumns" />
+		FROM id_segment
+		<where>
+			1=1
+			<if test="entity.bizTag != null and entity.bizTag != '' ">
+				and id_segment.BIZ_TAG = #{entity.bizTag}
+			</if>
+			<if test="entity.prefix != null and entity.prefix != '' ">
+				and id_segment.PREFIX = #{entity.prefix}
+			</if>
+			<if test="entity.step != null and entity.step != 0 ">
+				and id_segment.STEP = #{entity.step}
+			</if>
+			<if test="entity.maxId != null and entity.maxId != 0 ">
+				and id_segment.MAX_ID = #{entity.maxId}
+			</if>
+			<if test="entity.lastUpdateTime != null and entity.lastUpdateTime != '' ">
+				and id_segment.LAST_UPDATE_TIME = #{entity.lastUpdateTime}
+			</if>
+			<if test="entity.currentUpdateTime != null and entity.currentUpdateTime != '' ">
+				and id_segment.CURRENT_UPDATE_TIME = #{entity.currentUpdateTime}
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert">
+		INSERT INTO id_segment(
+		BIZ_TAG,
+		STEP,
+		MAX_ID,
+		PREFIX,
+		LAST_UPDATE_TIME,
+		CURRENT_UPDATE_TIME
+		)
+		VALUES (
+		#{entity.bizTag},
+		#{entity.step},
+		#{entity.maxId},
+		#{entity.prefix},
+		#{entity.lastUpdateTime},
+		#{entity.currentUpdateTime}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE id_segment SET
+		STEP = #{entity.step},
+		MAX_ID = #{entity.maxId},
+		LAST_UPDATE_TIME = #{entity.lastUpdateTime},
+		CURRENT_UPDATE_TIME = #{entity.currentUpdateTime}
+		WHERE BIZ_TAG = #{entity.bizTag} AND PREFIX = #{entity.prefix} AND MAX_ID = #{maxId}
+	</update>
+
+	<update id="updateEntity">
+		UPDATE id_segment SET
+		STEP = #{entity.step},
+		MAX_ID = #{entity.maxId},
+	    BIZ_TAG	 = #{entity.bizTag},
+	     MAX_ID = #{entity.maxId},
+		LAST_UPDATE_TIME = #{entity.lastUpdateTime},
+		CURRENT_UPDATE_TIME = #{entity.currentUpdateTime},
+		PREFIX = #{entity.prefix}
+		WHERE  BIZ_TAG	 = #{entity.bizTag} AND PREFIX = #{entity.prefix}
+	</update>
+
+	<update id="delete">
+		DELETE FROM id_segment
+		WHERE BIZ_TAG = #{entity.bizTag} AND PREFIX = #{entity.prefix}
+	</update>
+</mapper>
